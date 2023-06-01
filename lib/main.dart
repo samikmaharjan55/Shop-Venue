@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_venue/screens/produt_overview_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
             secondary: Colors.red,
             primary: Colors.blueGrey,
           )),
+      home: const ProductOverviewScreen(),
     );
   }
 }
