@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_venue/widgets/product_item.dart';
+import 'package:shop_venue/widgets/product_grid.dart';
 
 class ProductOverviewScreen extends StatefulWidget {
   const ProductOverviewScreen({Key? key}) : super(key: key);
@@ -18,17 +18,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           style: TextStyle(fontFamily: "Lato"),
         ),
       ),
-      body: GridView.builder(
-          itemCount: 4,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 3 / 2,
-          ),
-          itemBuilder: (ctx, index) {
-            return const ProductItem();
-          }),
+      body: ProductGrid(),
     );
   }
 }
