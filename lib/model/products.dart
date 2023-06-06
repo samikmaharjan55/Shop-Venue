@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shop_venue/model/product.dart';
 
-class Products {
+class Products with ChangeNotifier {
   final List<Product> _items = [
     Product(
         id: "first",
@@ -38,5 +39,9 @@ class Products {
 
   List<Product> get items {
     return [..._items];
+  }
+
+  Product findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
   }
 }
