@@ -9,7 +9,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loadedProduct = Provider.of<Product>(context);
+    final loadedProduct = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -20,14 +20,17 @@ class ProductItem extends StatelessWidget {
             loadedProduct.title,
             textAlign: TextAlign.center,
           ),
-          leading: IconButton(
-            icon: Icon(loadedProduct.isFavourite
-                ? Icons.favorite
-                : Icons.favorite_border),
-            onPressed: () {
-              loadedProduct.toggleIsFavourite();
+          leading: Consumer<Product>(
+            builder: (_, prod, child) {
+              return IconButton(
+                icon: Icon(
+                    prod.isFavourite ? Icons.favorite : Icons.favorite_border),
+                onPressed: () {
+                  prod.toggleIsFavourite();
+                },
+                color: Theme.of(context).colorScheme.secondary,
+              );
             },
-            color: Theme.of(context).colorScheme.secondary,
           ),
           trailing: IconButton(
             icon: const Icon(Icons.shopping_cart),

@@ -19,7 +19,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   bool _showFavourites = false;
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -45,8 +44,15 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                     const PopupMenuItem(
                         value: FilterOptions.All, child: Text("Show All")),
                   ]),
-          Badges(
-            value: cart.itemCount.toString(),
+          // consumer only affects the part that needs to rebuild
+          // rather than refreshing the whole screen
+          Consumer<Cart>(
+            builder: (_, cart, child) {
+              return Badges(
+                value: cart.itemCount.toString(),
+                child: child!,
+              );
+            },
             child: IconButton(
               icon: const Icon(Icons.shopping_cart),
               onPressed: () {},
