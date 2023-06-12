@@ -49,4 +49,19 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  // total amount
+  double get totalAmount {
+    double total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.quantity * cartItem.price;
+    });
+    return total;
+  }
+
+  // remove single item from cart
+  void removeFromCart(String id) {
+    _items.remove(id);
+    notifyListeners();
+  }
 }

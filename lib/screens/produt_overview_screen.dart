@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_venue/model/cart_provider.dart';
+import 'package:shop_venue/screens/cart_screen.dart';
 import 'package:shop_venue/widgets/badges.dart';
 import 'package:shop_venue/widgets/product_grid.dart';
 
@@ -55,7 +56,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
             },
             child: IconButton(
               icon: const Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, CartScreen.routeName);
+              },
             ),
           ),
         ],
