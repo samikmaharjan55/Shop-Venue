@@ -41,8 +41,8 @@ class ProductItem extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: Colors.blueGrey,
-                  content: Text('Added item to the cart'),
-                  duration: Duration(seconds: 2),
+                  content: const Text('Added item to the cart'),
+                  duration: const Duration(seconds: 2),
                   action: SnackBarAction(
                     label: "UNDO",
                     textColor: Colors.black87,
