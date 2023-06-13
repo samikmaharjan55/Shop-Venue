@@ -47,9 +47,11 @@ class CartScreen extends StatelessWidget {
                           color: Theme.of(context).primaryColor),
                     ),
                     onPressed: () {
-                      order.addOrder(
-                          cart.items.values.toList(), cart.totalAmount);
-                      cart.clearCart();
+                      if (cart.items.isNotEmpty || cart.totalAmount != 0) {
+                        order.addOrder(
+                            cart.items.values.toList(), cart.totalAmount);
+                        cart.clearCart();
+                      }
                     },
                   ),
                 ],
