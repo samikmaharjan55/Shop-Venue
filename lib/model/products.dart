@@ -28,7 +28,7 @@ class Products with ChangeNotifier {
             "https://cdn.mos.cms.futurecdn.net/6t8Zh249QiFmVnkQdCCtHK.jpg",
         isFavourite: false),
     Product(
-        id: "four",
+        id: "fourth",
         title: "T-Shirt",
         price: 1000,
         description: "A red color tshirt you can wear at any occassion.",

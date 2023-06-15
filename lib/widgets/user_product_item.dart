@@ -12,7 +12,7 @@ class UserProductItem extends StatelessWidget {
       leading: CircleAvatar(
         backgroundImage: NetworkImage(imageUrl),
       ),
-      trailing: Container(
+      trailing: SizedBox(
         width: 100,
         child: Row(
           children: [
