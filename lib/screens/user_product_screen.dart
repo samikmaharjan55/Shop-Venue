@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_venue/model/products.dart';
+import 'package:shop_venue/providers/products_provider.dart';
 import 'package:shop_venue/screens/edit_product_screen.dart';
 import 'package:shop_venue/widgets/app_drawer.dart';
 import 'package:shop_venue/widgets/user_product_item.dart';

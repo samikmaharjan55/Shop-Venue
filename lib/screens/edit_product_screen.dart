@@ -42,6 +42,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Product'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.check),
+          ),
+        ],
       ),
       body: Form(
         child: ListView(
@@ -74,7 +80,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 Container(
                   width: 100,
                   height: 100,
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                     top: 8,
                     right: 8,
                   ),
@@ -85,7 +91,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ),
                   ),
                   child: _imgUrlController.text.isEmpty
-                      ? Center(child: Text('Enter a URL'))
+                      ? const Center(child: Text('Enter a URL'))
                       : FittedBox(
                           child: Image.network(
                             _imgUrlController.text,

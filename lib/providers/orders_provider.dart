@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shop_venue/model/cart_provider.dart';
+import 'package:shop_venue/providers/cart_provider.dart';
 
 class OrderItem {
   final String id;

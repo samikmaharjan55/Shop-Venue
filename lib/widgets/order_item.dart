@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shop_venue/model/orders.dart' as oi;
+import 'package:shop_venue/providers/orders_provider.dart' as oi;
 
 class OrderItem extends StatefulWidget {
   final oi.OrderItem order;

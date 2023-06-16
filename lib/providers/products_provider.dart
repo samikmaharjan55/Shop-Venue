@@ -52,4 +52,25 @@ class Products with ChangeNotifier {
       return prodItem.isFavourite;
     }).toList();
   }
+
+  // this function adds new product
+  void addProduct(Product product) {
+    final newProduct = Product(
+        id: DateTime.now().toString(),
+        title: product.title,
+        price: product.price,
+        description: product.description,
+        imageURL: product.imageURL);
+    _items.add(newProduct);
+    notifyListeners();
+  }
+
+  // this function updates the current product
+  void updateProduct(String id, Product upProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = upProduct;
+      notifyListeners();
+    }
+  }
 }
