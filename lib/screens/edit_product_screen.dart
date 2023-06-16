@@ -16,11 +16,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descFocusNode = FocusNode();
   final _imgUrlFocusNode = FocusNode();
   final _imgUrlController = TextEditingController();
-
   final _form = GlobalKey<FormState>();
+  bool _isInit = true;
 
   var _editedProduct =
       Product(id: "", title: "", price: 0, description: "", imageURL: "");
+
+  var initValues = {
+    'title': "",
+    'price': '',
+    'description': "",
+    'imageURL': ""
+  };
 
   @override
   void initState() {
@@ -57,6 +64,27 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (_isInit) {
+      final String productId =
+          ModalRoute.of(context)!.settings.arguments as String;
+      if (productId != null) {
+        _editedProduct = Provider.of<Products>(context).findById(productId);
+        initValues = {
+          'title': _editedProduct.title,
+          'price': _editedProduct.price.toString(),
+          'description': _editedProduct.description,
+          'imageURL': _editedProduct.imageURL,
+        };
+        _imgUrlController.text = _editedProduct.imageURL;
+      }
+    }
+    _isInit = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -76,6 +104,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
+              initialValue: initValues["title"],
               decoration: const InputDecoration(labelText: 'Title'),
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (_) {
@@ -97,6 +126,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               },
             ),
             TextFormField(
+              initialValue: initValues["price"],
               decoration: const InputDecoration(labelText: 'Price'),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.number,
@@ -126,6 +156,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               },
             ),
             TextFormField(
+              initialValue: initValues["description"],
               decoration: const InputDecoration(labelText: 'Description'),
               keyboardType: TextInputType.multiline,
               maxLines: 3,
