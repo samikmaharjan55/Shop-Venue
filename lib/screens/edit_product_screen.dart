@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_venue/model/product.dart';
+import 'package:shop_venue/providers/products_provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const String routeName = "/edit_product_screen";
@@ -50,6 +52,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
+    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    Navigator.pop(context);
   }
 
   @override
@@ -133,9 +137,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 if (value.length < 10) {
                   return 'The description must be at least 10 characters';
                 }
-                if (double.parse(value) <= 0) {
-                  return 'The price should not be less than zero';
-                }
+
                 return null;
               },
               onSaved: (value) {
