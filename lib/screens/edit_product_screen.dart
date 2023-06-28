@@ -59,7 +59,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
-    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    if (_editedProduct.id.isNotEmpty) {
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editedProduct.id, _editedProduct);
+    } else {
+      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    }
+
     Navigator.pop(context);
   }
 
@@ -68,8 +74,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (_isInit) {
-      final String productId =
-          ModalRoute.of(context)!.settings.arguments as String;
+      final String? productId =
+          ModalRoute.of(context)?.settings.arguments as String?;
+
       if (productId != null) {
         _editedProduct = Provider.of<Products>(context).findById(productId);
         initValues = {
@@ -88,7 +95,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Product'),
+        title: _editedProduct.id.isNotEmpty
+            ? const Text('Edit Product')
+            : const Text('Add Product'),
         actions: [
           IconButton(
             onPressed: () {
