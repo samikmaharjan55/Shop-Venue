@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shop_venue/model/product.dart';
+import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   final List<Product> _items = [
@@ -54,7 +55,13 @@ class Products with ChangeNotifier {
   }
 
   // this function adds new product
-  void addProduct(Product product) {
+  void addProduct(Product product) async {
+    const url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
+    const test = "http://ip.jsontest.com/";
+    http.Response response = await http.get(Uri.parse(test));
+    print(response.statusCode);
+
     final newProduct = Product(
         id: DateTime.now().toString(),
         title: product.title,
@@ -72,5 +79,11 @@ class Products with ChangeNotifier {
       _items[prodIndex] = upProduct;
       notifyListeners();
     }
+  }
+
+  // this function deletes the current product
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
   }
 }
