@@ -5,39 +5,39 @@ import 'package:shop_venue/model/product.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
-  final List<Product> _items = [
-    Product(
-        id: "first",
-        title: "Watch",
-        price: 2000,
-        description: "The best watch you will find anywhere.",
-        imageURL:
-            "https://www.surfstitch.com/on/demandware.static/-/Sites-ss-master-catalog/default/dwef31ef54/images/MBB-M43BLK/BLACK-WOMENS-ACCESSORIES-ROSEFIELD-WATCHES-MBB-M43BLK_1.JPG",
-        isFavourite: false),
-    Product(
-        id: "second",
-        title: "Shoes",
-        price: 1500,
-        description: "Quality and comfort shoes with fashionable style.",
-        imageURL:
-            "https://assets.adidas.com/images/w_600,f_auto,q_auto:sensitive,fl_lossy/e06ae7c7b4d14a16acb3a999005a8b6a_9366/Lite_Racer_RBN_Shoes_White_F36653_01_standard.jpg",
-        isFavourite: false),
-    Product(
-        id: "third",
-        title: "Laptop",
-        price: 80000,
-        description: "The compact and powerful gaming laptop under the budget.",
-        imageURL:
-            "https://cdn.mos.cms.futurecdn.net/6t8Zh249QiFmVnkQdCCtHK.jpg",
-        isFavourite: false),
-    Product(
-        id: "fourth",
-        title: "T-Shirt",
-        price: 1000,
-        description: "A red color tshirt you can wear at any occassion.",
-        imageURL:
-            "https://5.imimg.com/data5/LM/NA/MY-49778818/mens-round-neck-t-shirt-500x500.jpg",
-        isFavourite: false),
+  List<Product> _items = [
+    // Product(
+    //     id: "first",
+    //     title: "Watch",
+    //     price: 2000,
+    //     description: "The best watch you will find anywhere.",
+    //     imageURL:
+    //         "https://www.surfstitch.com/on/demandware.static/-/Sites-ss-master-catalog/default/dwef31ef54/images/MBB-M43BLK/BLACK-WOMENS-ACCESSORIES-ROSEFIELD-WATCHES-MBB-M43BLK_1.JPG",
+    //     isFavourite: false),
+    // Product(
+    //     id: "second",
+    //     title: "Shoes",
+    //     price: 1500,
+    //     description: "Quality and comfort shoes with fashionable style.",
+    //     imageURL:
+    //         "https://assets.adidas.com/images/w_600,f_auto,q_auto:sensitive,fl_lossy/e06ae7c7b4d14a16acb3a999005a8b6a_9366/Lite_Racer_RBN_Shoes_White_F36653_01_standard.jpg",
+    //     isFavourite: false),
+    // Product(
+    //     id: "third",
+    //     title: "Laptop",
+    //     price: 80000,
+    //     description: "The compact and powerful gaming laptop under the budget.",
+    //     imageURL:
+    //         "https://cdn.mos.cms.futurecdn.net/6t8Zh249QiFmVnkQdCCtHK.jpg",
+    //     isFavourite: false),
+    // Product(
+    //     id: "fourth",
+    //     title: "T-Shirt",
+    //     price: 1000,
+    //     description: "A red color tshirt you can wear at any occassion.",
+    //     imageURL:
+    //         "https://5.imimg.com/data5/LM/NA/MY-49778818/mens-round-neck-t-shirt-500x500.jpg",
+    //     isFavourite: false),
   ];
 
   List<Product> get items {
@@ -83,6 +83,34 @@ class Products with ChangeNotifier {
     // if we get an error during post we catch the error and execute accordingly
 
     catch (error) {
+      print(error);
+      throw (error);
+    }
+  }
+
+  // this function fetches the product from firebase
+  Future<void> fetchAndSetProducts() async {
+    const url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
+    try {
+      final response = await http.get(Uri.parse(url));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      // print('here');
+      // print(extractedData.toString());
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Product(
+          id: prodId,
+          title: prodData['title'],
+          price: double.parse(prodData['price'].toString()),
+          description: prodData['description'],
+          imageURL: prodData['imageURL'],
+          isFavourite: prodData['isFavourite'],
+        ));
+      });
+      _items = loadedProducts;
+      notifyListeners();
+    } catch (error) {
       print(error);
       throw (error);
     }

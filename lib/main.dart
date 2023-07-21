@@ -7,7 +7,7 @@ import 'package:shop_venue/screens/cart_screen.dart';
 import 'package:shop_venue/screens/edit_product_screen.dart';
 import 'package:shop_venue/screens/order_screen.dart';
 import 'package:shop_venue/screens/product_details_screen.dart';
-import 'package:shop_venue/screens/produt_overview_screen.dart';
+import 'package:shop_venue/screens/product_overview_screen.dart';
 import 'package:shop_venue/screens/user_product_screen.dart';
 
 void main() {
