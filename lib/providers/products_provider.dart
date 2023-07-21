@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:shop_venue/model/product.dart';
 import 'package:http/http.dart' as http;
@@ -55,21 +57,34 @@ class Products with ChangeNotifier {
   }
 
   // this function adds new product
-  void addProduct(Product product) async {
+  void addProduct(Product product) {
     const url =
         "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
-    const test = "http://ip.jsontest.com/";
-    http.Response response = await http.get(Uri.parse(test));
-    print(response.statusCode);
+    // const test = "http://ip.jsontest.com/";
+    // http.Response response = await http.get(Uri.parse(test));
+    // print(response.statusCode);
 
-    final newProduct = Product(
-        id: DateTime.now().toString(),
-        title: product.title,
-        price: product.price,
-        description: product.description,
-        imageURL: product.imageURL);
-    _items.add(newProduct);
-    notifyListeners();
+    http
+        .post(Uri.parse(url),
+            body: json.encode({
+              'title': product.title,
+              'price': product.price,
+              'description': product.description,
+              'imageURL': product.imageURL,
+              'isFavourite': product.isFavourite,
+            }))
+        // the future gives response after posting to the database
+        .then((response) {
+      print(json.decode(response.body)['name']);
+      final newProduct = Product(
+          id: json.decode(response.body)['name'],
+          title: product.title,
+          price: product.price,
+          description: product.description,
+          imageURL: product.imageURL);
+      _items.add(newProduct);
+      notifyListeners();
+    });
   }
 
   // this function updates the current product
