@@ -57,24 +57,19 @@ class Products with ChangeNotifier {
   }
 
   // this function adds new product
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     const url =
         "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
-    // const test = "http://ip.jsontest.com/";
-    // http.Response response = await http.get(Uri.parse(test));
-    // print(response.statusCode);
-
-    return http
-        .post(Uri.parse(url),
-            body: json.encode({
-              'title': product.title,
-              'price': product.price,
-              'description': product.description,
-              'imageURL': product.imageURL,
-              'isFavourite': product.isFavourite,
-            }))
-        // the future gives response after posting to the database
-        .then((response) {
+    try {
+      final response = await http.post(Uri.parse(url),
+          body: json.encode({
+            'title': product.title,
+            'price': product.price,
+            'description': product.description,
+            'imageURL': product.imageURL,
+            'isFavourite': product.isFavourite,
+          }));
+      // the future gives response after posting to the database
       print(json.decode(response.body)['name']);
       final newProduct = Product(
           id: json.decode(response.body)['name'],
@@ -84,12 +79,13 @@ class Products with ChangeNotifier {
           imageURL: product.imageURL);
       _items.add(newProduct);
       notifyListeners();
-    })
-        // if we get an error during post we catch the error and execute accordingly
-        .catchError((error) {
+    }
+    // if we get an error during post we catch the error and execute accordingly
+
+    catch (error) {
       print(error);
       throw (error);
-    });
+    }
   }
 
   // this function updates the current product
