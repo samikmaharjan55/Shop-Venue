@@ -57,14 +57,14 @@ class Products with ChangeNotifier {
   }
 
   // this function adds new product
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url =
         "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
     // const test = "http://ip.jsontest.com/";
     // http.Response response = await http.get(Uri.parse(test));
     // print(response.statusCode);
 
-    http
+    return http
         .post(Uri.parse(url),
             body: json.encode({
               'title': product.title,
@@ -84,6 +84,11 @@ class Products with ChangeNotifier {
           imageURL: product.imageURL);
       _items.add(newProduct);
       notifyListeners();
+    })
+        // if we get an error during post we catch the error and execute accordingly
+        .catchError((error) {
+      print(error);
+      throw (error);
     });
   }
 
