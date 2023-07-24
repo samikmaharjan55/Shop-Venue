@@ -27,6 +27,8 @@ class Cart with ChangeNotifier {
 
   // this adds item to cart
   void addToCart(String productId, String title, double price) {
+    const url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/cart.json";
     if (_items.containsKey(productId)) {
       _items.update(
           productId,

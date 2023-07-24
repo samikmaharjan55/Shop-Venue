@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:shop_venue/exception/http_exception.dart';
 import 'package:shop_venue/model/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -117,17 +118,49 @@ class Products with ChangeNotifier {
   }
 
   // this function updates the current product
-  void updateProduct(String id, Product upProduct) {
+  Future<void> updateProduct(String id, Product upProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    if (prodIndex >= 0) {
-      _items[prodIndex] = upProduct;
-      notifyListeners();
+    try {
+      if (prodIndex >= 0) {
+        final url =
+            "https://shop-venue-344b6-default-rtdb.firebaseio.com/products/$id.json";
+        await http.patch(Uri.parse(url),
+            body: json.encode({
+              'title': upProduct.title,
+              'description': upProduct.description,
+              'imageURL': upProduct.imageURL,
+              'price': upProduct.price,
+            }));
+        _items[prodIndex] = upProduct;
+        notifyListeners();
+      }
+    } catch (error) {
+      print(error);
+      throw (error);
     }
   }
 
   // this function deletes the current product
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products/$id.json";
+    final existingProductIndex = items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    try {
+      final response = await http.delete(Uri.parse(url));
+      if (response.statusCode >= 400) {
+        _items.insert(existingProductIndex, existingProduct);
+        notifyListeners();
+        throw HttpException("Could not delete product");
+      } else {
+        existingProduct == null;
+      }
+    } catch (error) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException("Could not delete product");
+    }
   }
 }

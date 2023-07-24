@@ -64,19 +64,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id.isNotEmpty) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
-    } else {
       try {
         await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct);
+            .updateProduct(_editedProduct.id, _editedProduct);
       } catch (error) {
         await showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
                   title: const Text("Error Occurred"),
                   content: const Text(
-                      'Something has occurred! Product Could not be added'),
+                      'Something has occurred! Product could not be added'),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -87,15 +84,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   ],
                 ));
       }
-
-      // after process finishes
-      finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.pop(context);
+    } else {
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        await showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text("Error Occurred"),
+                  content: const Text(
+                      'Something has occurred! Product could not be added'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ));
       }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pop(context);
   }
 
   @override
