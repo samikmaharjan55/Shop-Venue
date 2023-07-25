@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:shop_venue/providers/cart_provider.dart';
+import 'package:http/http.dart' as http;
 
 class OrderItem {
   final String id;
@@ -22,16 +25,34 @@ class Orders with ChangeNotifier {
   }
 
   // adds order from cart to order
-  void addOrder(List<CartItem> cartProducts, double total) {
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     const url =
         "https://shop-venue-344b6-default-rtdb.firebaseio.com/orders.json";
-    _orders.insert(
-        0,
-        OrderItem(
-            id: DateTime.now().toString(),
-            amount: total,
-            products: cartProducts,
-            dateTime: DateTime.now()));
-    notifyListeners();
+    try {
+      final response = http.post(Uri.parse(url),
+          body: json.encode({
+            'amount': total,
+            'dateTime': DateTime.now().toIso8601String(),
+            'products': cartProducts
+                .map((cp) => {
+                      'id': cp.id,
+                      'quantity': cp.quantity,
+                      'price': cp.price,
+                      'title': cp.title,
+                    })
+                .toList(),
+          }));
+      _orders.insert(
+          0,
+          OrderItem(
+              id: DateTime.now().toString(),
+              amount: total,
+              products: cartProducts,
+              dateTime: DateTime.now()));
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw (error);
+    }
   }
 }
