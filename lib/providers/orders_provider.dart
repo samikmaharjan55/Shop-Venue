@@ -55,4 +55,37 @@ class Orders with ChangeNotifier {
       throw (error);
     }
   }
+
+  // fetching orders from the firebase
+  Future<void> fetchAndSetOrders() async {
+    const url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/orders.json";
+    try {
+      final response = await http.get(Uri.parse(url));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<OrderItem> _loadedOrders = [];
+      if (extractedData == null) {
+        return;
+      }
+      //print(extractedData.toString());
+      extractedData.forEach((orderId, orderData) {
+        _loadedOrders.add(OrderItem(
+            id: orderId,
+            amount: double.parse(orderData['amount'].toString()),
+            products: (orderData['products'] as List<dynamic>)
+                .map((item) => CartItem(
+                      id: item['id'],
+                      quantity: item['quantity'],
+                      price: double.parse(item['price'].toString()),
+                      title: item['title'],
+                    ))
+                .toList(),
+            dateTime: DateTime.parse(orderData['dateTime'])));
+      });
+      _orders = _loadedOrders;
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
 }
