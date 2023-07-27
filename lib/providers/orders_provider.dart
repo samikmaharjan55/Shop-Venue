@@ -18,6 +18,8 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
+  final String _authToken;
+  Orders(this._authToken, this._orders);
   List<OrderItem> _orders = [];
 
   List<OrderItem> get orders {
@@ -26,8 +28,8 @@ class Orders with ChangeNotifier {
 
   // adds order from cart to order
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
-    const url =
-        "https://shop-venue-344b6-default-rtdb.firebaseio.com/orders.json";
+    final url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/orders.json?auth=$_authToken";
     try {
       final response = http.post(Uri.parse(url),
           body: json.encode({
@@ -58,8 +60,8 @@ class Orders with ChangeNotifier {
 
   // fetching orders from the firebase
   Future<void> fetchAndSetOrders() async {
-    const url =
-        "https://shop-venue-344b6-default-rtdb.firebaseio.com/orders.json";
+    final url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/orders.json?auth=$_authToken";
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
