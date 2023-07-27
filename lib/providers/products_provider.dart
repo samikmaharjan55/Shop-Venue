@@ -6,6 +6,7 @@ import 'package:shop_venue/model/product.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
+  final String authToken;
   List<Product> _items = [
     // Product(
     //     id: "first",
@@ -41,6 +42,8 @@ class Products with ChangeNotifier {
     //     isFavourite: false),
   ];
 
+  Products(this.authToken, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -59,8 +62,8 @@ class Products with ChangeNotifier {
 
   // this function adds new product
   Future<void> addProduct(Product product) async {
-    const url =
-        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
+    final url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json?auth=$authToken";
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -91,8 +94,8 @@ class Products with ChangeNotifier {
 
   // this function fetches the product from firebase
   Future<void> fetchAndSetProducts() async {
-    const url =
-        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json";
+    final url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json?auth=$authToken";
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -123,7 +126,7 @@ class Products with ChangeNotifier {
     try {
       if (prodIndex >= 0) {
         final url =
-            "https://shop-venue-344b6-default-rtdb.firebaseio.com/products/$id.json";
+            "https://shop-venue-344b6-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken";
         await http.patch(Uri.parse(url),
             body: json.encode({
               'title': upProduct.title,
@@ -143,7 +146,7 @@ class Products with ChangeNotifier {
   // this function deletes the current product
   Future<void> deleteProduct(String id) async {
     final url =
-        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products/$id.json";
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken";
     final existingProductIndex = items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
