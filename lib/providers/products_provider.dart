@@ -72,6 +72,7 @@ class Products with ChangeNotifier {
             'price': product.price,
             'description': product.description,
             'imageURL': product.imageURL,
+            'creatorId': _userId,
           }));
       // the future gives response after posting to the database
       print(json.decode(response.body)['name']);
@@ -93,9 +94,11 @@ class Products with ChangeNotifier {
   }
 
   // this function fetches the product from firebase
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$_userId"' : "";
     final url =
-        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json?auth=$_authToken";
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/products.json?auth=$_authToken&$filterString";
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;

@@ -10,7 +10,8 @@ class UserProductScreen extends StatelessWidget {
   const UserProductScreen({super.key});
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<Products>(context, listen: false).fetchAndSetProducts();
+    await Provider.of<Products>(context, listen: false)
+        .fetchAndSetProducts(true);
   }
 
   @override
@@ -29,17 +30,30 @@ class UserProductScreen extends StatelessWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshProducts(context),
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8.0),
-          itemBuilder: (ctx, index) => UserProductItem(
-            productsData.items[index].title,
-            productsData.items[index].imageURL,
-            productsData.items[index].id,
-          ),
-          itemCount: productsData.items.length,
-        ),
+      body: FutureBuilder(
+        future: _refreshProducts(context),
+        builder: (ctx, snapshot) {
+          return snapshot.connectionState == ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: () => _refreshProducts(context),
+                  child: Consumer<Products>(
+                    builder: (ctx, products, _) {
+                      return ListView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemBuilder: (ctx, index) => UserProductItem(
+                          productsData.items[index].title,
+                          productsData.items[index].imageURL,
+                          productsData.items[index].id,
+                        ),
+                        itemCount: productsData.items.length,
+                      );
+                    },
+                  ),
+                );
+        },
       ),
     );
   }
