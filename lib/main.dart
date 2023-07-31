@@ -10,6 +10,7 @@ import 'package:shop_venue/screens/edit_product_screen.dart';
 import 'package:shop_venue/screens/order_screen.dart';
 import 'package:shop_venue/screens/product_details_screen.dart';
 import 'package:shop_venue/screens/product_overview_screen.dart';
+import 'package:shop_venue/screens/splash_screen.dart';
 import 'package:shop_venue/screens/user_product_screen.dart';
 
 void main() {
@@ -60,7 +61,15 @@ class MyApp extends StatelessWidget {
                   secondary: Colors.red,
                   primary: Colors.blueGrey,
                 )),
-            home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
+            home: auth.isAuth
+                ? ProductOverviewScreen()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, authResult) =>
+                        authResult.connectionState == ConnectionState.waiting
+                            ? SplashScreen()
+                            : AuthScreen(),
+                  ),
             routes: {
               ProductDetails.routename: (ctx) => const ProductDetails(),
               CartScreen.routeName: (ctx) => const CartScreen(),
