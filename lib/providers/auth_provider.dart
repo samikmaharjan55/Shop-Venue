@@ -106,14 +106,14 @@ class Auth with ChangeNotifier {
       return false;
     }
     final extractedData =
-        json.decode(prefs.getString("userData")) as Map<String, Object>;
-    final expiryDate = DateTime.parse(extractedData['expiryDate']);
+        json.decode(prefs.getString("userData")!) as Map<String, Object>;
+    final expiryDate = DateTime.parse(extractedData['expiryDate'].toString());
     if (expiryDate.isBefore(DateTime.now())) {
       return false;
     }
-    _token = extractedData['token'];
+    _token = extractedData['token'].toString();
     _expiryDate = expiryDate;
-    _userId = extractedData['userId'];
+    _userId = extractedData['userId'].toString();
     notifyListeners();
     _autoLogout();
     return true;
