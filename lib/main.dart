@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_venue/helper/custom_route.dart';
 import 'package:shop_venue/providers/auth_provider.dart';
 import 'package:shop_venue/providers/cart_provider.dart';
 import 'package:shop_venue/providers/orders_provider.dart';
@@ -56,11 +57,16 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Shop Venue',
             theme: ThemeData(
-                fontFamily: "Lato",
-                colorScheme: ColorScheme.fromSwatch().copyWith(
-                  secondary: Colors.red,
-                  primary: Colors.blueGrey,
-                )),
+              fontFamily: "Lato",
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                secondary: Colors.red,
+                primary: Colors.blueGrey,
+              ),
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+                TargetPlatform.iOS: CustomPageTransitionBuilder(),
+              }),
+            ),
             home: auth.isAuth
                 ? ProductOverviewScreen()
                 : FutureBuilder(
