@@ -1,3 +1,4 @@
+import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_venue/helper/custom_route.dart';
@@ -11,22 +12,21 @@ import 'package:shop_venue/screens/edit_product_screen.dart';
 import 'package:shop_venue/screens/order_screen.dart';
 import 'package:shop_venue/screens/product_details_screen.dart';
 import 'package:shop_venue/screens/product_overview_screen.dart';
-import 'package:shop_venue/screens/splash_screen.dart';
 import 'package:shop_venue/screens/user_product_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(SplashClass());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SplashClass extends StatelessWidget {
+  const SplashClass({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: Auth(),
+        ChangeNotifierProvider(
+          create: (_) => Auth(),
         ),
         ChangeNotifierProxyProvider<Auth, Products>(
           create: (context) => Products('', [], ''),
@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
                 auth.userId!);
           },
         ),
-        ChangeNotifierProvider.value(
-          value: Cart(),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
         ),
         ChangeNotifierProxyProvider<Auth, Orders>(
           create: (context) => Orders('', [], ''),
@@ -51,40 +51,84 @@ class MyApp extends StatelessWidget {
           },
         ),
       ],
-      child: Consumer<Auth>(
-        builder: (ctx, auth, _) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Shop Venue',
-            theme: ThemeData(
-              fontFamily: "Lato",
-              colorScheme: ColorScheme.fromSwatch().copyWith(
-                secondary: Colors.red,
-                primary: Colors.blueGrey,
-              ),
-              pageTransitionsTheme: PageTransitionsTheme(builders: {
-                TargetPlatform.android: CustomPageTransitionBuilder(),
-                TargetPlatform.iOS: CustomPageTransitionBuilder(),
-              }),
-            ),
-            home: auth.isAuth
-                ? ProductOverviewScreen()
-                : FutureBuilder(
-                    future: auth.tryAutoLogin(),
-                    builder: (ctx, authResult) =>
-                        authResult.connectionState == ConnectionState.waiting
-                            ? SplashScreen()
-                            : AuthScreen(),
-                  ),
-            routes: {
-              ProductDetails.routename: (ctx) => const ProductDetails(),
-              CartScreen.routeName: (ctx) => const CartScreen(),
-              OrderScreen.routeName: (ctx) => const OrderScreen(),
-              UserProductScreen.routeName: (ctx) => const UserProductScreen(),
-              EditProductScreen.routeName: (ctx) => const EditProductScreen(),
-            },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Shop Venue',
+        theme: ThemeData(
+          fontFamily: "Lato",
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: Colors.red,
+            primary: Colors.blueGrey,
+          ),
+          pageTransitionsTheme: PageTransitionsTheme(builders: {
+            TargetPlatform.android: CustomPageTransitionBuilder(),
+            TargetPlatform.iOS: CustomPageTransitionBuilder(),
+          }),
+        ),
+        home: SplashBetween(),
+        routes: {
+          ProductDetails.routename: (ctx) => const ProductDetails(),
+          CartScreen.routeName: (ctx) => const CartScreen(),
+          OrderScreen.routeName: (ctx) => const OrderScreen(),
+          UserProductScreen.routeName: (ctx) => const UserProductScreen(),
+          EditProductScreen.routeName: (ctx) => const EditProductScreen(),
+          AuthScreen.routeName: (ctx) => AuthScreen(),
+          ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
+        },
+      ),
+    );
+  }
+}
+
+class SplashBetween extends StatefulWidget {
+  const SplashBetween({super.key});
+
+  @override
+  State<SplashBetween> createState() => _SplashBetweenState();
+}
+
+class _SplashBetweenState extends State<SplashBetween> {
+  bool isInit = true;
+  bool isLogin = false;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (isInit) {
+      checkLogin();
+    }
+    isInit = false;
+  }
+
+  void checkLogin() async {
+    isLogin = await Provider.of<Auth>(context, listen: false).tryAutoLogin();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SplashScreen.navigate(
+        name: "assets/images/splash.flr",
+        fit: BoxFit.cover,
+        transitionsBuilder: (context, animation, secondanimation, child) {
+          var begin = Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var tween = Tween(begin: begin, end: end)
+              .chain(CurveTween(curve: Curves.easeIn));
+          var offsetAnimation = animation.drive(tween);
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
           );
         },
+        backgroundColor: Colors.blueGrey,
+        startAnimation: "loading",
+        loopAnimation: "loading",
+        until: () => Future.delayed(
+          Duration(seconds: 3),
+        ),
+        alignment: Alignment.center,
+        next: (_) => isLogin ? ProductOverviewScreen() : AuthScreen(),
       ),
     );
   }

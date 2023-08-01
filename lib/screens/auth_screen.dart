@@ -161,6 +161,7 @@ class _AuthCardState extends State<AuthCard>
         await Provider.of<Auth>(context, listen: false)
             .signUp(_authData["email"]!, _authData["password"]!);
       }
+      Navigator.pushReplacementNamed(context, ProductOverviewScreen.routeName);
     } on HttpException catch (error) {
       var errorMessage = "Authentication failed";
       if (error.toString().contains("EMAIL_NOT_FOUND")) {
