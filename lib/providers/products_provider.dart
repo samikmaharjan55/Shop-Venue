@@ -173,4 +173,15 @@ class Products with ChangeNotifier {
       throw HttpException("Could not delete product");
     }
   }
+
+  // get serach list
+  List<Product> getsearchItems(String query) {
+    if (query.isNotEmpty && query != null) {
+      return _items
+          .where((prod) => prod.title.toLowerCase().startsWith(query))
+          .toList();
+    }
+    notifyListeners();
+    return [];
+  }
 }

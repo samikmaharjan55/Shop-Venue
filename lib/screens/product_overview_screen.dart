@@ -7,6 +7,7 @@ import 'package:shop_venue/providers/products_provider.dart';
 import 'package:shop_venue/screens/cart_screen.dart';
 import 'package:shop_venue/widgets/app_drawer.dart';
 import 'package:shop_venue/widgets/badges.dart';
+import 'package:shop_venue/widgets/custom_search_delegate.dart';
 import 'package:shop_venue/widgets/product_grid.dart';
 
 enum FilterOptions { Favourites, All }
@@ -94,6 +95,11 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           : ProductGrid(
               _showFavourites,
             ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showSearch(context: context, delegate: CustomSearchDelegate());
+          },
+          child: Icon(Icons.search)),
     );
   }
 }

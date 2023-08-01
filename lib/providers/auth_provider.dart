@@ -54,6 +54,7 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
+      final user = await addUserToDatabase(_token!, userId!, email);
       _autoLogout();
       notifyListeners();
 
@@ -117,5 +118,21 @@ class Auth with ChangeNotifier {
     notifyListeners();
     _autoLogout();
     return true;
+  }
+
+  Future<void> addUserToDatabase(
+      String authToken, String userId, String email) async {
+    final url =
+        "https://shop-venue-344b6-default-rtdb.firebaseio.com/users/$userId.json?auth=$authToken";
+    try {
+      final response = await http.put(Uri.parse(url),
+          body: json.encode({
+            'userId': userId,
+            'email': email,
+          }));
+      print(json.decode(response.body));
+    } catch (error) {
+      throw (error);
+    }
   }
 }

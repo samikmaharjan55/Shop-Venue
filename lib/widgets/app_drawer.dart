@@ -4,6 +4,7 @@ import 'package:shop_venue/helper/custom_route.dart';
 import 'package:shop_venue/providers/auth_provider.dart';
 import 'package:shop_venue/screens/auth_screen.dart';
 import 'package:shop_venue/screens/order_screen.dart';
+import 'package:shop_venue/screens/product_overview_screen.dart';
 import 'package:shop_venue/screens/user_product_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -26,7 +27,8 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.shopping_cart),
             title: const Text('Shop'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/");
+              Navigator.pushReplacementNamed(
+                  context, ProductOverviewScreen.routeName);
             },
           ),
           const Divider(),
