@@ -15,7 +15,7 @@ import 'package:shop_venue/screens/product_overview_screen.dart';
 import 'package:shop_venue/screens/user_product_screen.dart';
 
 void main() {
-  runApp(SplashClass());
+  runApp(const SplashClass());
 }
 
 class SplashClass extends StatelessWidget {
@@ -65,7 +65,7 @@ class SplashClass extends StatelessWidget {
             TargetPlatform.iOS: CustomPageTransitionBuilder(),
           }),
         ),
-        home: SplashBetween(),
+        home: const SplashBetween(),
         routes: {
           ProductDetails.routename: (ctx) => const ProductDetails(),
           CartScreen.routeName: (ctx) => const CartScreen(),
@@ -73,7 +73,8 @@ class SplashClass extends StatelessWidget {
           UserProductScreen.routeName: (ctx) => const UserProductScreen(),
           EditProductScreen.routeName: (ctx) => const EditProductScreen(),
           AuthScreen.routeName: (ctx) => AuthScreen(),
-          ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
+          ProductOverviewScreen.routeName: (ctx) =>
+              const ProductOverviewScreen(),
         },
       ),
     );
@@ -111,7 +112,7 @@ class _SplashBetweenState extends State<SplashBetween> {
         name: "assets/images/splash.flr",
         fit: BoxFit.cover,
         transitionsBuilder: (context, animation, secondanimation, child) {
-          var begin = Offset(1.0, 0.0);
+          var begin = const Offset(1.0, 0.0);
           var end = Offset.zero;
           var tween = Tween(begin: begin, end: end)
               .chain(CurveTween(curve: Curves.easeIn));
@@ -125,10 +126,10 @@ class _SplashBetweenState extends State<SplashBetween> {
         startAnimation: "loading",
         loopAnimation: "loading",
         until: () => Future.delayed(
-          Duration(seconds: 3),
+          const Duration(seconds: 3),
         ),
         alignment: Alignment.center,
-        next: (_) => isLogin ? ProductOverviewScreen() : AuthScreen(),
+        next: (_) => isLogin ? const ProductOverviewScreen() : AuthScreen(),
       ),
     );
   }

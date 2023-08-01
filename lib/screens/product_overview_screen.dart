@@ -87,7 +87,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           ),
         ],
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -99,7 +99,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           onPressed: () {
             showSearch(context: context, delegate: CustomSearchDelegate());
           },
-          child: Icon(Icons.search)),
+          child: const Icon(Icons.search)),
     );
   }
 }

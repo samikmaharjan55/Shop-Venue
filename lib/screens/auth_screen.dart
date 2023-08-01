@@ -17,8 +17,8 @@ class AuthScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                   colors: [
                     Color.fromRGBO(215, 117, 255, 0.5),
                     Color.fromRGBO(255, 188, 117, 0.9),
@@ -29,7 +29,7 @@ class AuthScreen extends StatelessWidget {
             ),
           ),
           SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(
@@ -38,22 +38,22 @@ class AuthScreen extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                           bottom: 20.0, left: 20.0, right: 20.0),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 60.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 60.0),
                       transform: Matrix4.rotationZ(-8 * pi / 180)
                         ..translate(-10.0),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.deepOrange.shade900,
                           boxShadow: [
-                            BoxShadow(
+                            const BoxShadow(
                                 blurRadius: 8,
                                 color: Colors.black26,
                                 offset: Offset(0, 2))
                           ]),
-                      child: Text(
+                      child: const Text(
                         "Shop Venue",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -66,7 +66,7 @@ class AuthScreen extends StatelessWidget {
                   ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
-                    child: AuthCard(),
+                    child: const AuthCard(),
                   )
                 ],
               ),
@@ -108,9 +108,10 @@ class _AuthCardState extends State<AuthCard>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
-    _slideAnimation = Tween<Offset>(begin: Offset(0, -1.5), end: Offset(0, 0))
+    _slideAnimation = Tween<Offset>(
+            begin: const Offset(0, -1.5), end: const Offset(0, 0))
         .animate(
             CurvedAnimation(parent: _controller, curve: Curves.bounceInOut));
     _opacityAnimation = Tween(begin: 0.0, end: 1.0)
@@ -128,14 +129,14 @@ class _AuthCardState extends State<AuthCard>
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('An Error Occurred!'),
+              title: const Text('An Error Occurred!'),
               content: Text(errorMessage),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Ok"),
+                  child: const Text("Ok"),
                 ),
               ],
             ));
@@ -214,7 +215,7 @@ class _AuthCardState extends State<AuthCard>
       ),
       elevation: 8.0,
       child: AnimatedContainer(
-        duration: Duration(
+        duration: const Duration(
           milliseconds: 300,
         ),
         curve: Curves.easeIn,
@@ -227,14 +228,14 @@ class _AuthCardState extends State<AuthCard>
         //     BoxConstraints(
         //   minHeight: _heightAnimation!.value.height,
         // ),
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Email",
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -249,7 +250,7 @@ class _AuthCardState extends State<AuthCard>
                   },
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: "Password"),
+                  decoration: const InputDecoration(labelText: "Password"),
                   obscureText: true,
                   controller: _passwordController,
                   validator: (value) {
@@ -277,7 +278,7 @@ class _AuthCardState extends State<AuthCard>
                     child: TextFormField(
                       enabled: _authMode == AuthMode.Signup,
                       decoration:
-                          InputDecoration(labelText: "Confirm Password"),
+                          const InputDecoration(labelText: "Confirm Password"),
                       obscureText: true,
                       validator: _authMode == AuthMode.Signup
                           ? (value) {
@@ -290,11 +291,11 @@ class _AuthCardState extends State<AuthCard>
                   ),
                 ),
                 //),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 if (_isLoading)
-                  CircularProgressIndicator()
+                  const CircularProgressIndicator()
                 else
                   TextButton(
                     onPressed: _submit,

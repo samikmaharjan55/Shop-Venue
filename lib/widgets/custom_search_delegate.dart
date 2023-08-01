@@ -17,7 +17,7 @@ class CustomSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = "";
           },
-          icon: Icon(Icons.clear)),
+          icon: const Icon(Icons.clear)),
     ];
   }
 
@@ -27,7 +27,7 @@ class CustomSearchDelegate extends SearchDelegate {
       onPressed: () {
         close(context, null);
       },
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
     );
   }
 
@@ -49,7 +49,7 @@ class CustomSearchDelegate extends SearchDelegate {
               backgroundImage: NetworkImage(searchItems[index].imageURL),
             ),
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
       itemCount: searchItems.length,
@@ -60,7 +60,7 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     final searchItems = Provider.of<Products>(context).getsearchItems(query);
     return query.isEmpty
-        ? Column(
+        ? const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
@@ -81,7 +81,7 @@ class CustomSearchDelegate extends SearchDelegate {
                     backgroundImage: NetworkImage(searchItems[index].imageURL),
                   ),
                 ),
-                Divider(),
+                const Divider(),
               ],
             ),
             itemCount: searchItems.length,

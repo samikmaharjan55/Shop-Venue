@@ -66,7 +66,7 @@ class CartScreen extends StatelessWidget {
 
 class OrderButton extends StatefulWidget {
   final cart;
-  const OrderButton(this.cart);
+  const OrderButton(this.cart, {super.key});
 
   @override
   State<OrderButton> createState() => _OrderButtonState();
