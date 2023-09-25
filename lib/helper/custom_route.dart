@@ -23,7 +23,7 @@ class CustomPageTransitionBuilder extends PageTransitionsBuilder {
       Animation<double> animation,
       Animation<double> secondaryAnimation,
       Widget child) {
-    var begin = Offset(1.0, 0.0);
+    var begin = const Offset(1.0, 0.0);
     var end = Offset.zero;
     var tween =
         Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.easeIn));
