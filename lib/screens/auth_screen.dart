@@ -10,6 +10,8 @@ enum AuthMode { Login, Signup }
 class AuthScreen extends StatelessWidget {
   static const String routeName = "/auth";
 
+  const AuthScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -90,7 +92,7 @@ class _AuthCardState extends State<AuthCard>
   //form key
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };

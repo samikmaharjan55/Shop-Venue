@@ -11,6 +11,8 @@ import 'package:shop_venue/screens/product_overview_screen.dart';
 import 'package:shop_venue/screens/user_product_screen.dart';
 
 class AppDrawer extends StatefulWidget {
+  const AppDrawer({super.key});
+
   @override
   State<AppDrawer> createState() => _AppDrawerState();
 }

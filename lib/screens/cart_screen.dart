@@ -82,13 +82,6 @@ class _OrderButtonState extends State<OrderButton> {
             child: CircularProgressIndicator(),
           )
         : TextButton(
-            child: Text(
-              "ORDER NOW",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Theme.of(context).primaryColor),
-            ),
             onPressed: widget.cart.totalAmount <= 0
                 ? null
                 : () async {
@@ -105,6 +98,13 @@ class _OrderButtonState extends State<OrderButton> {
                       });
                     }
                   },
+            child: Text(
+              "ORDER NOW",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColor),
+            ),
           );
   }
 }

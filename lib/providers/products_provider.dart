@@ -75,7 +75,7 @@ class Products with ChangeNotifier {
             'creatorId': _userId,
           }));
       // the future gives response after posting to the database
-      print(json.decode(response.body)['name']);
+      //print(json.decode(response.body)['name']);
       final newProduct = Product(
           id: json.decode(response.body)['name'],
           title: product.title,
@@ -88,8 +88,8 @@ class Products with ChangeNotifier {
     // if we get an error during post we catch the error and execute accordingly
 
     catch (error) {
-      print(error);
-      throw (error);
+      //print(error);
+      rethrow;
     }
   }
 
@@ -122,8 +122,8 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
-      print(error);
-      throw (error);
+      //print(error);
+      rethrow;
     }
   }
 
@@ -145,8 +145,8 @@ class Products with ChangeNotifier {
         notifyListeners();
       }
     } catch (error) {
-      print(error);
-      throw (error);
+      //print(error);
+      rethrow;
     }
   }
 

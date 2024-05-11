@@ -54,8 +54,8 @@ class Orders with ChangeNotifier {
               dateTime: DateTime.now()));
       notifyListeners();
     } catch (error) {
-      print(error);
-      throw (error);
+      //print(error);
+      rethrow;
     }
   }
 
@@ -66,13 +66,13 @@ class Orders with ChangeNotifier {
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      final List<OrderItem> _loadedOrders = [];
+      final List<OrderItem> loadedOrders = [];
       if (extractedData == null) {
         return;
       }
       //print(extractedData.toString());
       extractedData.forEach((orderId, orderData) {
-        _loadedOrders.add(OrderItem(
+        loadedOrders.add(OrderItem(
             id: orderId,
             amount: double.parse(orderData['amount'].toString()),
             products: (orderData['products'] as List<dynamic>)
@@ -85,10 +85,10 @@ class Orders with ChangeNotifier {
                 .toList(),
             dateTime: DateTime.parse(orderData['dateTime'])));
       });
-      _orders = _loadedOrders.reversed.toList();
+      _orders = loadedOrders.reversed.toList();
       notifyListeners();
     } catch (error) {
-      throw (error);
+      rethrow;
     }
   }
 }

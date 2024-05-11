@@ -72,7 +72,7 @@ class SplashClass extends StatelessWidget {
           OrderScreen.routeName: (ctx) => const OrderScreen(),
           UserProductScreen.routeName: (ctx) => const UserProductScreen(),
           EditProductScreen.routeName: (ctx) => const EditProductScreen(),
-          AuthScreen.routeName: (ctx) => AuthScreen(),
+          AuthScreen.routeName: (ctx) => const AuthScreen(),
           ProductOverviewScreen.routeName: (ctx) =>
               const ProductOverviewScreen(),
         },
@@ -129,7 +129,8 @@ class _SplashBetweenState extends State<SplashBetween> {
           const Duration(seconds: 3),
         ),
         alignment: Alignment.center,
-        next: (_) => isLogin ? const ProductOverviewScreen() : AuthScreen(),
+        next: (_) =>
+            isLogin ? const ProductOverviewScreen() : const AuthScreen(),
       ),
     );
   }

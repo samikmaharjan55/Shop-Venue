@@ -29,7 +29,7 @@ class UserProductScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
       body: FutureBuilder(
         future: _refreshProducts(context),
         builder: (ctx, snapshot) {

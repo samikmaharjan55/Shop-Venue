@@ -40,7 +40,7 @@ class Auth with ChangeNotifier {
             'password': password,
             'returnSecureToken': true,
           }));
-      print(json.decode(response.body));
+      //print(json.decode(response.body));
       final responseData = json.decode(response.body);
       if (responseData["error"] != null) {
         throw HttpException(responseData["error"]["message"]);
@@ -74,7 +74,7 @@ class Auth with ChangeNotifier {
       });
       prefs.setString("userData", userData);
     } catch (error) {
-      throw (error);
+      rethrow;
     }
   }
 
@@ -138,10 +138,10 @@ class Auth with ChangeNotifier {
             'email': email,
             'userType': "client",
           }));
-      print(json.decode(response.body));
+      //print(json.decode(response.body));
       return "client";
     } catch (error) {
-      throw (error);
+      rethrow;
     }
   }
 
@@ -153,8 +153,8 @@ class Auth with ChangeNotifier {
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       return extractedData["userType"];
     } catch (error) {
-      print(error);
-      throw (error);
+      //print(error);
+      rethrow;
     }
   }
 }
